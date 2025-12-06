@@ -18,5 +18,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard"],
+  matcher: ["/dashboard","/dashboard/tracker","/dashboard/todo","/dashboard/setting"],
 };
