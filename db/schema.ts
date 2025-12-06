@@ -92,6 +92,37 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }));
 
+export const todo = pgTable("todo", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  description: text("description"),
+  status: text("status")
+    .notNull()
+    .default("pending"), // pending | completed | cancelled
+  priority: text("priority")
+    .notNull()
+    .default("medium"), // low | medium | high
+  dueDate: timestamp("due_date"),
+  completed: boolean("completed").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+
+export const todoRelations = relations(todo, ({ one }) => ({
+  user: one(user, {
+    fields: [todo.userId],
+    references: [user.id],
+  }),
+}));
+
+
 export const schema = {
   user,
   session,
@@ -100,4 +131,7 @@ export const schema = {
   userRelations,
   sessionRelations,
   accountRelations,
+  todo,
+  todoRelations
 };
+
