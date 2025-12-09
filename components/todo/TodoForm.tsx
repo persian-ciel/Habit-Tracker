@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-// تعریف نوع برای تسک
 export interface TodoFormData {
   title: string;
   description?: string;
@@ -12,9 +11,9 @@ export interface TodoFormData {
 }
 
 
-// مشخص کردن نوع props
+
 interface TodoFormProps {
-  onAdd: (data: TodoFormData) => Promise<void>;
+  onAdd: (data: TodoFormData) => void;
 }
 
 export default function TodoForm({ onAdd }: TodoFormProps) {
@@ -30,7 +29,6 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
     if (!form.title.trim()) return;
     await onAdd(form);
 
-    // ریست فرم
     setForm({
       title: "",
       description: "",

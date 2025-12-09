@@ -1,21 +1,47 @@
-"use client";
-
 import TodoItem, { TodoItemData } from "./TodoItem";
 
-interface TodoListProps {
-  todos: TodoItemData[];
-  onUpdate: (id: string, field: keyof TodoItemData, value: any) => void;
-  onDelete: (id: string) => void;
-}
 
-export default function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
-  if (!todos.length) return <p>No tasks yet!</p>;
+
+export default function TodoList() {
+  
+  const todoList: TodoItemData[] = [
+  {
+    id: "1",
+    title: "Todo 1",
+    description: "Description 1",
+    status: "pending",
+    priority: "medium",
+    dueDate: new Date().toISOString(),
+    completed: false
+  },
+  {
+    id: "2",
+    title: "Todo 2",
+    description: "Description 2",
+    status: "pending",
+    priority: "medium",
+    dueDate: new Date().toISOString(),
+    completed: false
+  },
+  {
+    id: "3",
+    title: "Todo 3",
+    description: "Description 3",
+    status: "pending",
+    priority: "medium",
+    dueDate: new Date().toISOString(),
+    completed: false
+  }
+];
+
 
   return (
-    <div className="space-y-3">
-      {todos.map((t) => (
-        <TodoItem key={t.id} todo={t} onUpdate={onUpdate} onDelete={onDelete} />
-      ))}
-    </div>
-  );
+  <div className="space-y-3">
+    {todoList.map((todo) => (
+      <TodoItem key={todo.id} {...todo} />
+    ))}
+  </div>
+);
+
+
 }

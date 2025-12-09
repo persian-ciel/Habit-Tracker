@@ -82,7 +82,7 @@ export default function DashboardLayout({ children }) {
       </aside>
 
       <main className="flex-1 p-6 overflow-auto">
-        <header className="mb-4 flex items-center justify-between">
+        <header className="mb-4 flex items-center justify-between   rounded-full py-4 px-8  bg-black/15">
           <div>
             <UserName />
           </div>
