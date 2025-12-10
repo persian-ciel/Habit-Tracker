@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Calendar } from "lucide-react";
+import { useRef, useState } from "react";
 
 export interface TodoFormData {
   title: string;
@@ -25,6 +26,13 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
     dueDate: "",
   });
 
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const openPicker = () => {
+    if (inputRef.current) {
+      inputRef.current.showPicker()   // ← باز کردن date picker
+    }
+  }
   const handleSubmit = async () => {
     if (!form.title.trim()) return;
     await onAdd(form);
@@ -39,48 +47,56 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
   };
 
   return (
-    <div className="bg-gray-800 p-4 rounded-lg mb-6 space-y-3">
+    <div className="h-full bg-black/20 p-4 rounded-lg mb-6 space-y-3">
       <input
-        className="w-full p-2 bg-gray-700 rounded"
+        className="w-full p-2 bg-white/20 rounded"
         placeholder="Task title"
         value={form.title}
         onChange={(e) => setForm({ ...form, title: e.target.value })}
       />
       <textarea
-        className="w-full p-2 bg-gray-700 rounded"
+        className="w-full p-2 bg-white/20 rounded"
         placeholder="Description"
         value={form.description}
         onChange={(e) => setForm({ ...form, description: e.target.value })}
       />
-      <div className="flex gap-3">
+      <div className="flex flex-col gap-4">
         <select
-          className="p-2 bg-gray-700 rounded"
+          className="p-2 bg-white/20 rounded"
           value={form.priority}
           onChange={(e) => setForm({ ...form, priority: e.target.value as TodoFormData["priority"] })}
         >
-          <option value="low">Low priority</option>
-          <option value="medium">Medium priority</option>
-          <option value="high">High priority</option>
+          <option value="low" className="bg-black/80">Low priority</option>
+          <option value="medium" className="bg-black/80">Medium priority</option>
+          <option value="high" className="bg-black/80">High priority</option>
         </select>
         <select
-          className="p-2 bg-gray-700 rounded"
+          className="p-2 bg-white/20 rounded"
           value={form.status}
           onChange={(e) => setForm({ ...form, status: e.target.value as TodoFormData["status"] })}
         >
-          <option value="pending">Pending</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="pending" className="bg-black/80 ">Pending</option>
+          <option value="completed" className="bg-black/80">Completed</option>
+          <option value="cancelled" className="bg-black/80">Cancelled</option>
         </select>
-        <input
-          type="date"
-          className="p-2 bg-gray-700 rounded"
-          value={form.dueDate}
-          onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
-        />
+        <div className="relative w-full">
+      <input
+        ref={inputRef}
+        type="date"
+        className="p-2 bg-white/20 rounded w-full pr-10"
+        value={form.dueDate}
+        onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
+      />
+
+      <Calendar
+        onClick={openPicker}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FAC67A] cursor-pointer"
+      />
+    </div>
       </div>
       <button
         onClick={handleSubmit}
-        className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+        className="bg-[#DA498D] hover:bg-[#69247C] px-4 py-2 rounded mt-5"
       >
         Add Task
       </button>

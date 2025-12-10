@@ -81,7 +81,7 @@ export default function DashboardLayout({ children }) {
         </nav>
       </aside>
 
-      <main className="flex-1 p-6 overflow-auto">
+      <main className="flex-1 p-6 overflow-auto h-screen">
         <header className="mb-4 flex items-center justify-between   rounded-full py-4 px-8  bg-black/15">
           <div>
             <UserName />

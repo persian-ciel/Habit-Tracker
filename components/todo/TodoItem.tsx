@@ -1,6 +1,5 @@
 "use client";
 
-
 export interface TodoItemData {
   id: string;
   title: string;
@@ -11,24 +10,26 @@ export interface TodoItemData {
   completed: boolean;
 }
 
-
-
-
-export default function TodoItem({ id,title, description, priority, status, dueDate, completed }: TodoItemData) {
+export default function TodoItem({
+  id,
+  title,
+  description,
+  priority,
+  status,
+  dueDate
+}: TodoItemData) {
   return (
-    <div className="bg-gray-800 p-4 rounded flex justify-between items-start">
-      <div className="space-y-1">
-        <h3
-          className={`text-lg `}
-        >
-          {title}
-        </h3>
+    <div className="bg-black/20 p-4 rounded-lg shadow-md w-full block">
+      <div className="space-y-2">
+        <h3 className="text-lg font-semibold">{title}</h3>
 
-        {description && <p className="text-gray-400 text-sm">{description}</p>}
+        {description && (
+          <p className="text-gray-400 text-sm leading-5">{description}</p>
+        )}
 
-        <div className="flex gap-3 text-sm">
+        <div className="flex flex-col gap-3 text-sm mt-2">
           <select
-            className="bg-gray-700 p-1 rounded"
+            className="bg-white/20 p-1 rounded"
             value={priority}
             onChange={() => {}}
           >
@@ -38,7 +39,7 @@ export default function TodoItem({ id,title, description, priority, status, dueD
           </select>
 
           <select
-            className="bg-gray-700 p-1 rounded"
+            className="bg-white/20 p-1 rounded"
             value={status}
             onChange={() => {}}
           >
@@ -49,17 +50,14 @@ export default function TodoItem({ id,title, description, priority, status, dueD
 
           <input
             type="date"
-            className="bg-gray-700 p-1 rounded"
+            className="bg-white/20 p-1 rounded"
             value={dueDate ? dueDate.split("T")[0] : ""}
             onChange={() => {}}
           />
         </div>
       </div>
 
-      <button
-        
-        className="text-red-400 hover:text-red-600 px-2"
-      >
+      <button className="text-red-400 hover:text-red-600 mt-3">
         Delete
       </button>
     </div>

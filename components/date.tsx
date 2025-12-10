@@ -11,7 +11,7 @@ export default function TodayDate() {
   });
 
   return (
-    <span className="text-md font-medium text-[#DA498D] drop-shadow-2xl">
+    <span className="text-md font-medium text-[#FAC67A] drop-shadow-2xl">
       {formatted}
     </span>
   );

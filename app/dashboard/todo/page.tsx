@@ -23,7 +23,7 @@ export default function TodoPage() {
     setTodos((prev) => [...prev, newTodo]);
   };
 
-  // ویرایش todo
+
   const updateTodo = (id: string, updatedFields: Partial<TodoItemData>) => {
     setTodos((prev) =>
       prev.map((t) => (t.id === id ? { ...t, ...updatedFields } : t))
@@ -35,16 +35,16 @@ export default function TodoPage() {
   };
 
   return (
-    <div className="text-white w-full p-4 flex flex-row gap-4">
+    <div className="text-white w-full h-10/12 p-4 flex flex-row gap-4 overflow-hidden">
       
 
-      <div className="flex flex-col w-1/3">
-        <h2 className="text-2xl font-bold mb-6">To-Do List</h2>
+      <div className="flex flex-col w-1/3 h-full p-4 rounded-lg ">
+        <h2 className="text-2xl font-bold mb-3">To-Do List</h2>
         <TodoForm onAdd={addTodo} />
       </div>
       
 
-      <div>
+      <div className="flex-1 h-full overflow-y-auto p-4 rounded-lg">
         <TodoList  />
       </div>
       
