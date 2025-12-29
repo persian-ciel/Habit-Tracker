@@ -10,6 +10,7 @@ export interface TodoItemData {
   status: "pending" | "completed" | "cancelled";
   dueDate?: string;
   completed: boolean;
+  
 }
 
 interface Props extends TodoItemData {

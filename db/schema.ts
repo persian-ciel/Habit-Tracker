@@ -122,6 +122,22 @@ export const tasks = pgTable('tasks', {
   updated_at: timestamp('updated_at').defaultNow(),
 });
 
+export const taskOrders = pgTable("task_orders", {
+  id: serial("id").primaryKey(),
+  user_id: text("user_id") // ← change from integer to text
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  task_id: integer("task_id")
+    .notNull()
+    .references(() => tasks.id, { onDelete: "cascade" }),
+  view_key: text("view_key").notNull(), // e.g., "all", "today", "high-priority" etc.
+  position: integer("position").notNull(),
+},
+(table) => [
+  index("task_orders_user_view_idx").on(table.user_id, table.view_key),
+  index("task_orders_position_idx").on(table.user_id, table.view_key, table.position),
+]);
+
 
 export const schema = {
   user,

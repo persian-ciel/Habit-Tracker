@@ -84,6 +84,7 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
         onChange={(e) => setForm({ ...form, title: e.target.value })}
       />
       <textarea
+        rows={12} 
         className="w-full p-2 bg-white/20 rounded"
         placeholder="Description"
         value={form.description}
