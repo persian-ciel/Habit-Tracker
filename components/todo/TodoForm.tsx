@@ -11,10 +11,8 @@ export interface TodoFormData {
   dueDate?: string;
 }
 
-
-
 interface TodoFormProps {
-  onAdd: (data: TodoFormData) => void;
+  onAdd: (data: TodoFormData) => Promise<void>; 
 }
 
 export default function TodoForm({ onAdd }: TodoFormProps) {
@@ -26,28 +24,59 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
     dueDate: "",
   });
 
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState<string | null>(null);
 
-  const openPicker = () => {
-    if (inputRef.current) {
-      inputRef.current.showPicker()   // ← باز کردن date picker
-    }
-  }
+  const inputRef = useRef<HTMLInputElement>(null);
+  const openPicker = () => inputRef.current?.showPicker();
+
   const handleSubmit = async () => {
-    if (!form.title.trim()) return;
-    await onAdd(form);
+    setError(null);
 
-    setForm({
-      title: "",
-      description: "",
-      priority: "medium",
-      status: "pending",
-      dueDate: "",
-    });
+    // اعتبارسنجی title و description
+    if (!form.title.trim()) {
+      setError("Title cannot be empty");
+      return;
+    }
+    if (!form.description?.trim()) {
+      setError("Description cannot be empty");
+      return;
+    }
+
+    // اعتبارسنجی تاریخ
+    if (!form.dueDate?.trim()) {
+      setError("Date cannot be empty");
+      return;
+    }
+    if (form.dueDate) {
+      const selectedDate = new Date(form.dueDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // فقط تاریخ بدون ساعت
+      if (selectedDate < today) {
+        setError("Due date cannot be in the past");
+        return;
+      }
+    }
+
+    setLoading(true);
+    try {
+      await onAdd(form);
+      setForm({
+        title: "",
+        description: "",
+        priority: "medium",
+        status: "pending",
+        dueDate: "",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="h-full bg-black/20 p-4 rounded-lg mb-6 space-y-3">
+      {error && <p className="text-red-400 text-sm">{error}</p>}
+
       <input
         className="w-full p-2 bg-white/20 rounded"
         placeholder="Task title"
@@ -75,30 +104,30 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
           value={form.status}
           onChange={(e) => setForm({ ...form, status: e.target.value as TodoFormData["status"] })}
         >
-          <option value="pending" className="bg-black/80 ">Pending</option>
+          <option value="pending" className="bg-black/80">Pending</option>
           <option value="completed" className="bg-black/80">Completed</option>
           <option value="cancelled" className="bg-black/80">Cancelled</option>
         </select>
         <div className="relative w-full">
-      <input
-        ref={inputRef}
-        type="date"
-        className="p-2 bg-white/20 rounded w-full pr-10"
-        value={form.dueDate}
-        onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
-      />
-
-      <Calendar
-        onClick={openPicker}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FAC67A] cursor-pointer"
-      />
-    </div>
+          <input
+            ref={inputRef}
+            type="date"
+            className="p-2 bg-white/20 rounded w-full pr-10"
+            value={form.dueDate}
+            onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
+          />
+          <Calendar
+            onClick={openPicker}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FAC67A] cursor-pointer"
+          />
+        </div>
       </div>
       <button
         onClick={handleSubmit}
+        disabled={loading}
         className="bg-[#DA498D] hover:bg-[#69247C] px-4 py-2 rounded mt-5"
       >
-        Add Task
+        {loading ? "Adding..." : "Add Task"}
       </button>
     </div>
   );

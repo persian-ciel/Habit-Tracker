@@ -1,93 +1,36 @@
 "use client";
 
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import TodoItem, { TodoItemData } from "./TodoItem";
+import TodoFilter from "./TodoFilter";
 
-export default function TodoList() {
-  const todoList: TodoItemData[] = [
-    {
-      id: "1",
-      title: "Todo 1",
-      description: "Description 1",
-      status: "pending",
-      priority: "medium",
-      dueDate: new Date().toISOString(),
-      completed: false
-    },
-    {
-      id: "2",
-      title: "Todo 2",
-      description: "Description 2",
-      status: "pending",
-      priority: "medium",
-      dueDate: new Date().toISOString(),
-      completed: false
-    },
-    {
-      id: "3",
-      title: "Todo 3",
-      description: "Description 3",
-      status: "pending",
-      priority: "medium",
-      dueDate: new Date().toISOString(),
-      completed: false
-    },
-    {
-      id: "4",
-      title: "Todo 4",
-      description: "Description 4",
-      status: "pending",
-      priority: "medium",
-      dueDate: new Date().toISOString(),
-      completed: false
-    },
-    {
-      id: "5",
-      title: "Todo 5",
-      description: "Description 5",
-      status: "pending",
-      priority: "medium",
-      dueDate: new Date().toISOString(),
-      completed: false
-    },
-    {
-      id: "6",
-      title: "Todo 6",
-      description: "Description 6",
-      status: "pending",
-      priority: "medium",
-      dueDate: new Date().toISOString(),
-      completed: false
-    },
-    {
-      id: "7",
-      title: "Todo 7",
-      description: "Description 7",
-      status: "pending",
-      priority: "medium",
-      dueDate: new Date().toISOString(),
-      completed: false
-    },
-    {
-      id: "8",
-      title: "Todo 8",
-      description: "Description 8",
-      status: "pending",
-      priority: "medium",
-      dueDate: new Date().toISOString(),
-      completed: false
-    },
-  ];
+interface TodoListProps {
+  todos: TodoItemData[];
+  onUpdate: (id: number, fields: Partial<TodoItemData>) => Promise<void>;
+  onDelete: (id: number) => Promise<void>;
+  onFilterChange: Dispatch<SetStateAction<{ priority: string; completed: string }>>;
+}
+
+export default function TodoList({ todos, onUpdate, onDelete, onFilterChange }: TodoListProps) {
+  const [filters, setFilters] = useState({ priority: "all", completed: "all" });
+
+  useEffect(() => {
+    onFilterChange(filters);
+  }, [filters]);
 
   return (
-    <div className="columns-3 gap-4 w-full">
-      {todoList.map((todo) => (
-        <div
-          key={todo.id}
-          className="break-inside-avoid inline-block w-full mb-4"
-        >
-          <TodoItem {...todo} />
-        </div>
-      ))}
+    <div className="w-full h-full flex flex-col gap-4">
+      <TodoFilter onChange={setFilters} />
+
+      <div className="columns-3 gap-4 w-full h-full">
+        {todos.length === 0 && <p className="text-gray-400 mt-4 col-span-full">No tasks match the filter.</p>}
+
+        {todos.map((todo) => (
+          <div key={todo.id} className="break-inside-avoid inline-block w-full mb-4">
+            <TodoItem {...todo} onUpdate={onUpdate} onDelete={onDelete} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

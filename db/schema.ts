@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index, serial, integer,date,varchar } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -92,35 +92,35 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }));
 
-export const todo = pgTable("todo", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  title: text("title").notNull(),
-  description: text("description"),
-  status: text("status")
-    .notNull()
-    .default("pending"), // pending | completed | cancelled
-  priority: text("priority")
-    .notNull()
-    .default("medium"), // low | medium | high
-  dueDate: timestamp("due_date"),
-  completed: boolean("completed").default(false).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
+
+export const habits = pgTable('habits', {
+  id: serial('id').primaryKey(),
+  user_id: text('user_id').notNull(),
+  title: text('title').notNull(),
+  description: text('description'),
+  frequency: text('frequency'),
+  created_at: timestamp('created_at').defaultNow(),
 });
 
+export const habit_logs = pgTable('habit_logs', {
+  id: serial('id').primaryKey(),
+  habit_id: integer('habit_id').notNull(),
+  log_date: date('log_date').notNull(),
+  completed: boolean('completed').default(false),
+});
 
-export const todoRelations = relations(todo, ({ one }) => ({
-  user: one(user, {
-    fields: [todo.userId],
-    references: [user.id],
-  }),
-}));
+export const tasks = pgTable('tasks', {
+  id: serial('id').primaryKey(),
+  user_id: text('user_id').notNull(),
+  title: text('title').notNull(),
+  description: text('description'),
+  due_date: timestamp('due_date'),
+  completed: boolean('completed').default(false),
+  priority: varchar('priority', { length: 10 }).default('medium'), 
+  priority_status: varchar('priority_status', { length: 20 }).default('normal'),
+  created_at: timestamp('created_at').defaultNow(),
+  updated_at: timestamp('updated_at').defaultNow(),
+});
 
 
 export const schema = {
@@ -131,7 +131,8 @@ export const schema = {
   userRelations,
   sessionRelations,
   accountRelations,
-  todo,
-  todoRelations
+  habits,
+  habit_logs,
+  tasks
 };
 
