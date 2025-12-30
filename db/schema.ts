@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index, serial, integer,date,varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index, serial, integer,date,varchar,pgEnum  } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -138,6 +138,36 @@ export const taskOrders = pgTable("task_orders", {
   index("task_orders_position_idx").on(table.user_id, table.view_key, table.position),
 ]);
 
+export const planPeriodEnum = pgEnum("plan_period", [
+  "weekly",
+  "monthly",
+  "yearly",
+]);
+
+export const plans = pgTable(
+  "plans",
+  {
+    id: serial("id").primaryKey(),
+
+    user_id: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+
+    content: text("content").notNull(),
+
+    period: planPeriodEnum("period").notNull(),
+
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    completed: boolean("completed").default(false).notNull(),
+    updated_at: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("plans_user_period_idx").on(table.user_id, table.period),
+  ]
+);
 
 export const schema = {
   user,
@@ -149,6 +179,9 @@ export const schema = {
   accountRelations,
   habits,
   habit_logs,
-  tasks
+  tasks,
+  taskOrders,
+  planPeriodEnum,
+  plans
 };
 
