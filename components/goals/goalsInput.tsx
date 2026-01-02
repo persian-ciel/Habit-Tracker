@@ -23,11 +23,11 @@ export default function GoalInput({ text, period, onTextChange, onPeriodChange, 
         onChange={(e) => onPeriodChange(e.target.value as Period)}
         className="px-3 p-2 bg-white/20 rounded-lg cursor-pointer"
       >
-        <option value="weekly">Weekly</option>
-        <option value="monthly">Monthly</option>
-        <option value="yearly">Yearly</option>
+        <option value="weekly" className="bg-black/80">Weekly</option>
+        <option value="monthly" className="bg-black/80">Monthly</option>
+        <option value="yearly" className="bg-black/80">Yearly</option>
       </select>
-      <button onClick={onAdd} className="bg-[#FAC67A] text-black px-4 rounded-lg">Add</button>
+      <button onClick={onAdd} className="bg-[#FAC67A] text-black px-4 rounded-lg cursor-pointer">Add</button>
     </div>
   );
 }
