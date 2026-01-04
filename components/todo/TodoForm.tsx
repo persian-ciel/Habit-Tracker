@@ -7,8 +7,8 @@ export interface TodoFormData {
   title: string;
   description?: string;
   priority: "low" | "medium" | "high";
-  status: "pending" | "completed" | "cancelled";
   dueDate?: string;
+  status?: "pending"; // خودکار pending
 }
 
 interface TodoFormProps {
@@ -20,8 +20,8 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
     title: "",
     description: "",
     priority: "medium",
-    status: "pending",
     dueDate: "",
+    status: "pending", // خودکار pending
   });
 
   const [loading, setLoading] = useState(false); 
@@ -65,8 +65,8 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
         title: "",
         description: "",
         priority: "medium",
-        status: "pending",
         dueDate: "",
+        status: "pending",
       });
     } finally {
       setLoading(false);
@@ -84,8 +84,8 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
         onChange={(e) => setForm({ ...form, title: e.target.value })}
       />
       <textarea
-        rows={12} 
-        className="w-full p-2 bg-white/20 rounded max-h-70"
+        rows={20} 
+        className="w-full p-2 bg-white/20 rounded max-h-80"
         placeholder="Description"
         value={form.description}
         onChange={(e) => setForm({ ...form, description: e.target.value })}
@@ -94,21 +94,15 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
         <select
           className="p-2 bg-white/20 rounded"
           value={form.priority}
-          onChange={(e) => setForm({ ...form, priority: e.target.value as TodoFormData["priority"] })}
+          onChange={(e) =>
+            setForm({ ...form, priority: e.target.value as TodoFormData["priority"] })
+          }
         >
           <option value="low" className="bg-black/80">Low priority</option>
           <option value="medium" className="bg-black/80">Medium priority</option>
           <option value="high" className="bg-black/80">High priority</option>
         </select>
-        <select
-          className="p-2 bg-white/20 rounded"
-          value={form.status}
-          onChange={(e) => setForm({ ...form, status: e.target.value as TodoFormData["status"] })}
-        >
-          <option value="pending" className="bg-black/80">Pending</option>
-          <option value="completed" className="bg-black/80">Completed</option>
-          <option value="cancelled" className="bg-black/80">Cancelled</option>
-        </select>
+
         <div className="relative w-full">
           <input
             ref={inputRef}

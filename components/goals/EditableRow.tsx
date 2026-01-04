@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+
 type Period = "weekly" | "monthly" | "yearly";
 
 interface Item {
@@ -10,95 +11,118 @@ interface Item {
   completed?: boolean;
 }
 
-interface Props {
-  title: string;
-  period: Period;
-  items: Item[];
+interface EditableRowProps {
+  item: Item;
+  isEditing: boolean;
+  onStartEdit: (id: number) => void;
+  onEndEdit: () => void;
   onDelete: (id: number) => void;
   onUpdate: (id: number, text: string) => void;
   onToggleComplete: (id: number, completed: boolean) => void;
 }
+
 export default function EditableRow({
   item,
+  isEditing,
+  onStartEdit,
+  onEndEdit,
   onDelete,
   onUpdate,
   onToggleComplete,
-}: {
-  item: Item;
-  onDelete: (id: number) => void;
-  onUpdate: (id: number, text: string) => void;
-  onToggleComplete: (id: number, completed: boolean) => void;
-}) {
-  const [editing, setEditing] = useState(false);
+}: EditableRowProps) {
   const [value, setValue] = useState(item.content);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    setValue(item.content);
+  }, [item.content]);
+
+  useEffect(() => {
+    if (isEditing) {
+      textareaRef.current?.focus();
+      textareaRef.current?.setSelectionRange(value.length, value.length);
+    }
+  }, [isEditing, value.length]);
 
   const handleSave = () => {
     if (value.trim() && value !== item.content) {
       onUpdate(item.id, value);
     }
-    setEditing(false);
+    onEndEdit();
   };
 
   const handleCancel = () => {
     setValue(item.content);
-    setEditing(false);
+    onEndEdit();
   };
 
   return (
-    <div className="bg-white/10 flex gap-2 mb-2 px-4 py-4 rounded-lg items-center" >
+    <div
+      className={`bg-white/10 flex gap-2 mb-2 px-4 py-4 rounded-lg items-start transition-all
+        ${isEditing ? "scale-[1.02]" : ""}`}
+    >
       <input
         type="checkbox"
         checked={item.completed || false}
-        onChange={e => onToggleComplete(item.id, e.target.checked)}
-        className="w-5 h-5 cursor-pointer mt-1"
+        onChange={(e) => onToggleComplete(item.id, e.target.checked)}
+        className="w-5 h-5 mt-1 accent-[#DA498D] cursor-pointer"
+        disabled={isEditing}
       />
 
-      {editing ? (
-        <>
+      {isEditing ? (
+        <div className="flex-1 flex flex-col gap-3">
           <textarea
+            ref={textareaRef}
             value={value}
-            onChange={e => {
+            onChange={(e) => {
               setValue(e.target.value);
               e.target.style.height = "auto";
               e.target.style.height = e.target.scrollHeight + "px";
             }}
-            autoFocus
-            disabled={item.completed}
-            className={`border px-2 flex-1 rounded resize-none min-h-6 ${
-              item.completed ? "bg-gray-100 text-gray-400 cursor-not-allowed" : ""
-            }`}
-            rows={1}
+            className="border px-3 py-2 rounded resize-none min-h-[150px]"
           />
-          <button
-            onClick={handleSave}
-            className="bg-green-500 text-white px-3 py-1 rounded"
-          >
-            Save
-          </button>
-          <button
-            onClick={handleCancel}
-            className="bg-gray-400 text-white px-3 py-1 rounded"
-          >
-            Cancel
-          </button>
-        </>
+          <div className="flex gap-2">
+            <button
+              onClick={handleSave}
+              className="bg-green-500 text-white px-4 py-1.5 rounded"
+            >
+              Save
+            </button>
+            <button
+              onClick={handleCancel}
+              className="bg-gray-400 text-white px-4 py-1.5 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       ) : (
-        <>
+        <div className="flex-1 flex justify-between items-center">
           <div
-            className={`flex-1 cursor-pointer whitespace-normal px-4 ${
-              item.completed ? "text-gray-400 line-through" : ""
+            className={`flex-1 whitespace-normal ${
+              item.completed ? "line-through text-gray-400" : ""
             }`}
-            onClick={() => !item.completed && setEditing(true)}
           >
             {item.content}
           </div>
-          <button
-            onClick={() => onDelete(item.id)}
-            className="text-red-500 text-sm cursor-pointer"
-          >
-            Delete
-          </button>
-        </>
+
+          <div className="flex gap-2">
+            {!item.completed && (
+              <button
+                onClick={() => onStartEdit(item.id)}
+                className="text-yellow-400 hover:text-yellow-600 px-2"
+              >
+                Edit
+              </button>
+            )}
+            <button
+              onClick={() => onDelete(item.id)}
+              className="text-red-500 hover:text-red-700 px-2"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

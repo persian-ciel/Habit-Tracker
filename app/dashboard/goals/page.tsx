@@ -78,6 +78,7 @@ export default function GoalsPage() {
     fetchItems();
   };
 
+  // 🟢 تغییر مهم: toggleComplete + move به آخر
   const toggleComplete = async (id: number, completed: boolean) => {
     try {
       await fetch(`/api/plans/${id}`, {
@@ -85,13 +86,33 @@ export default function GoalsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ completed }),
       });
+
+      // به‌روزرسانی محلی برای نمایش سریع
+      setItems((prev) => {
+        const updated = prev.map((item) =>
+          item.id === id ? { ...item, completed } : item
+        );
+
+        if (completed) {
+          // آیتم را به آخر منتقل کن
+          const moved = updated.find((item) => item.id === id)!;
+          const others = updated.filter((item) => item.id !== id);
+          return [...others, moved];
+        }
+
+        return updated;
+      });
     } catch (err) {
       console.error("Toggle complete error:", err);
     }
-    fetchItems();
   };
 
-  if (loading) return <div className="flex h-11/12 mx-auto items-center justify-center"><Loader2 className="size-4 animate-spin"/></div>;
+  if (loading)
+    return (
+      <div className="flex h-11/12 mx-auto items-center justify-center">
+        <Loader2 className="size-4 animate-spin" />
+      </div>
+    );
 
   return (
     <div className="w-full h-10/12 mx-auto p-6 space-y-6">
@@ -102,6 +123,7 @@ export default function GoalsPage() {
         onPeriodChange={setPeriod}
         onAdd={addItem}
       />
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {(["weekly", "monthly", "yearly"] as Period[]).map((p) => (
           <GoalsSection
@@ -110,7 +132,7 @@ export default function GoalsPage() {
             period={p}
             items={items}
             onDelete={deleteItem}
-            onUpdate={updateItem}      
+            onUpdate={updateItem}
             onToggleComplete={toggleComplete}
           />
         ))}

@@ -50,7 +50,7 @@ export default function TodoList({
       <div
         className={
           focusedTodoId === null
-            ? "columns-3 gap-4 mt-4"
+            ? "columns-3 gap-4 mt-6"
             : "flex justify-center mt-6"
         }
       >
