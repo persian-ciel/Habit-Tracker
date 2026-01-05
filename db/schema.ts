@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index, serial, integer,date,varchar,pgEnum  } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index, serial, integer,date,varchar,pgEnum, uniqueIndex  } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -92,22 +92,68 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }));
 
+export const trackingTypeEnum = pgEnum("tracking_type", ["daily", "hourly", "count"]);
 
-export const habits = pgTable('habits', {
-  id: serial('id').primaryKey(),
-  user_id: text('user_id').notNull(),
-  title: text('title').notNull(),
-  description: text('description'),
-  frequency: text('frequency'),
-  created_at: timestamp('created_at').defaultNow(),
+export const user_habits = pgTable(
+  "user_habits",
+  {
+    id: serial("id").primaryKey(),
+    user_id: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }), // ← اضافه شد
+    habit_id: integer("habit_id")
+      .notNull()
+      .references(() => habits.id, { onDelete: "cascade" }),
+    active: boolean("active").default(true).notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    uniqueUserHabit: uniqueIndex("unique_user_habit").on(table.user_id, table.habit_id),
+  })
+);
+
+export const habits = pgTable("habits", {
+  id: serial("id").primaryKey(),
+  user_id: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }), // ← حالا درست اشاره می‌کنه
+  title: text("title").notNull(),
+  description: text("description"),
+  tracking_type: trackingTypeEnum("tracking_type").notNull(), // ← enum واقعی
+  target_value: integer("target_value"),
+  created_at: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const habit_logs = pgTable('habit_logs', {
-  id: serial('id').primaryKey(),
-  habit_id: integer('habit_id').notNull(),
-  log_date: date('log_date').notNull(),
-  completed: boolean('completed').default(false),
-});
+export const habit_logs = pgTable(
+  "habit_logs",
+  {
+    id: serial("id").primaryKey(),
+    habit_id: integer("habit_id")
+      .references(() => habits.id, { onDelete: "cascade" })
+      .notNull(),
+
+    log_date: date("log_date").notNull(),
+
+    log_hour: integer("log_hour"), // فقط hourly (0-23)
+
+    value: integer("value"), // فقط count
+
+    completed: boolean("completed").default(false),
+
+    created_at: timestamp("created_at").defaultNow(),
+  },
+  (table) => ({
+    dailyUnique: uniqueIndex("habit_daily_unique").on(
+      table.habit_id,
+      table.log_date
+    ),
+    hourlyUnique: uniqueIndex("habit_hourly_unique").on(
+      table.habit_id,
+      table.log_date,
+      table.log_hour
+    ),
+  })
+);
 
 export const tasks = pgTable('tasks', {
   id: serial('id').primaryKey(),

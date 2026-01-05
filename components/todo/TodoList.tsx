@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState, Dispatch, SetStateAction } from "react";
+import { Loader2 } from "lucide-react";
 import TodoItem, { TodoItemData } from "./TodoItem";
 import TodoFilter from "./TodoFilter";
 
 interface Props {
   todos: TodoItemData[];
+  loading: boolean;
   onUpdate: (id: number, fields: Partial<TodoItemData>) => Promise<void>;
   onDelete: (id: number) => Promise<void>;
   onFilterChange: Dispatch<
@@ -16,6 +18,7 @@ interface Props {
 
 export default function TodoList({
   todos,
+  loading,
   onUpdate,
   onDelete,
   onFilterChange,
@@ -43,37 +46,42 @@ export default function TodoList({
 
   return (
     <div className="w-full">
-
       {focusedTodoId === null && <TodoFilter onChange={setFilters} />}
 
-
-      <div
-        className={
-          focusedTodoId === null
-            ? "columns-3 gap-4 mt-6"
-            : "flex justify-center mt-6"
-        }
-      >
-        {visibleTodos.map((todo) => (
-          <div
-            key={todo.id}
-            className={
-              focusedTodoId === null
-                ? "break-inside-avoid mb-4"
-                : "w-full"
-            }
-          >
-            <TodoItem
-              {...todo}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-              isFocused={focusedTodoId === todo.id}
-              onFocus={() => setFocusedTodoId(todo.id)}
-              onUnfocus={() => setFocusedTodoId(null)}
-            />
-          </div>
-        ))}
-      </div>
+      
+      {loading ? (
+        <div className="flex justify-center items-center mt-16 h-[50vh]">
+          <Loader2 className="w-4 h-4 animate-spin " />
+        </div>
+      ) : (
+        <div
+          className={
+            focusedTodoId === null
+              ? "columns-3 gap-4 mt-6"
+              : "flex justify-center mt-6"
+          }
+        >
+          {visibleTodos.map((todo) => (
+            <div
+              key={todo.id}
+              className={
+                focusedTodoId === null
+                  ? "break-inside-avoid mb-4"
+                  : "w-full"
+              }
+            >
+              <TodoItem
+                {...todo}
+                onUpdate={onUpdate}
+                onDelete={onDelete}
+                isFocused={focusedTodoId === todo.id}
+                onFocus={() => setFocusedTodoId(todo.id)}
+                onUnfocus={() => setFocusedTodoId(null)}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

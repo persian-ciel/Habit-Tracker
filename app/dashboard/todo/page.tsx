@@ -19,7 +19,6 @@ export default function TodoPage() {
   });
   const [isFocused, setIsFocused] = useState(false);
 
-  /* Toast state */
   const [toast, setToast] = useState<{
     message: string;
     type: ToastType;
@@ -62,68 +61,58 @@ export default function TodoPage() {
     fetchTodos(0);
   }, [filters]);
 
-  /* CREATE */
   const addTodo = async (form: TodoFormData) => {
-  try {
-    const res = await fetch("/api/tasks", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error();
 
-    showToast("Task created successfully", "success");
+      showToast("Task created successfully", "success");
+      setPage(0);
+      fetchTodos(0);
+    } catch {
+      showToast("Failed to create task", "error");
+    }
+  };
 
-
-    setPage(0);
-    fetchTodos(0);
-  } catch {
-    showToast("Failed to create task", "error");
-  }
-};
-
-
-  /* UPDATE */
   const updateTodo = async (
-  id: number,
-  fields: Partial<TodoItemData>
-) => {
-  try {
-    const res = await fetch("/api/tasks", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, ...fields }),
-    });
+    id: number,
+    fields: Partial<TodoItemData>
+  ) => {
+    try {
+      const res = await fetch("/api/tasks", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, ...fields }),
+      });
 
-    if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error();
 
-    showToast("Task updated successfully", "success");
+      showToast("Task updated successfully", "success");
+      fetchTodos(page);
+    } catch {
+      showToast("Failed to update task", "error");
+    }
+  };
 
-    fetchTodos(page);
-  } catch {
-    showToast("Failed to update task", "error");
-  }
-};
-
-
-  /* DELETE */
   const deleteTodo = async (id: number) => {
-  try {
-    const res = await fetch(`/api/tasks?id=${id}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await fetch(`/api/tasks?id=${id}`, {
+        method: "DELETE",
+      });
 
-    if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error();
 
-    showToast("Task deleted successfully", "success");
-
-    fetchTodos(page);
-  } catch {
-    showToast("Failed to delete task", "error");
-  }
-};
-
+      showToast("Task deleted successfully", "success");
+      fetchTodos(page);
+    } catch {
+      showToast("Failed to delete task", "error");
+    }
+  };
 
   return (
     <>
@@ -141,6 +130,7 @@ export default function TodoPage() {
           <div className="flex-1 overflow-auto">
             <TodoList
               todos={todos}
+              loading={loading}   
               onUpdate={updateTodo}
               onDelete={deleteTodo}
               onFilterChange={setFilters}
@@ -172,12 +162,10 @@ export default function TodoPage() {
                 Next
               </button>
             </div>
-
           )}
         </div>
       </div>
 
-      {/* Toast */}
       <Toast
         message={toast.message}
         type={toast.type}
