@@ -11,15 +11,14 @@ interface Props {
 const SIDE = 24;
 const HEX_HEIGHT = Math.sqrt(3) * SIDE;
 const HORIZONTAL_SPACING = SIDE * 2;
-const VERTICAL_SPACING = HEX_HEIGHT * 1; // دقیقاً (3/4) ارتفاع برای honeycomb فشرده
+const VERTICAL_SPACING = HEX_HEIGHT;
 
-// تولید موقعیت هگزها دقیقاً مثل تصویر مرجع
 const generateHexes = (daysInMonth: number) => {
   const hexes = [];
   let day = 1;
   let row = 0;
 
-  const rowCounts = [5, 4, 5, 5, 5, 5,2 ];
+  const rowCounts = [5, 4, 5, 5, 5, 5, 2];
 
   while (day <= daysInMonth && row < rowCounts.length) {
     const cols = rowCounts[row];
@@ -41,7 +40,6 @@ const generateHexes = (daysInMonth: number) => {
   return hexes;
 };
 
-// نقاط شش‌ضلعی pointy-top
 const getHexPoints = (cx: number, cy: number, side: number) => {
   const points = [];
   for (let i = 0; i < 6; i++) {
@@ -59,14 +57,12 @@ export default function HabitHexTracker({ habitId, year, month }: Props) {
   const daysInMonth = new Date(year, month, 0).getDate();
   const HEXES = generateHexes(daysInMonth);
 
-  // محاسبه ابعاد SVG با حاشیه کافی در همه جهت‌ها (به خصوص بالا)
   const maxX = Math.max(...HEXES.map((h) => h.x), 0);
   const maxY = Math.max(...HEXES.map((h) => h.y), 0);
 
-  const padding = SIDE; // حاشیه یکسان در همه طرف‌ها
-
-  const width = maxX + SIDE * 2 + padding * 2;
-  const height = maxY + HEX_HEIGHT + padding * 2; // حاشیه بالا و پایین کافی
+  const padding = SIDE;
+  const viewWidth = maxX + SIDE * 2 + padding * 2;
+  const viewHeight = maxY + HEX_HEIGHT + padding * 2;
 
   useEffect(() => {
     fetch(`/api/habits/${habitId}/logs?year=${year}&month=${month}`)
@@ -93,40 +89,53 @@ export default function HabitHexTracker({ habitId, year, month }: Props) {
   };
 
   return (
-    <svg
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}
-      className="mx-auto block"
-    >
-      {/* گروه اصلی با جابجایی به مرکز با حاشیه */}
-      <g transform={`translate(${padding}, ${padding + HEX_HEIGHT / 2})`}>
-        {HEXES.map(({ day, x, y }) => (
-          <g
-            key={day}
-            onClick={() => toggle(day)}
-            className="cursor-pointer transition-transform "
-          >
-            <polygon
-              points={getHexPoints(x + SIDE, y, SIDE)}
-              fill={days[day] ? "#22c55e" : "#1e293b"}
-              stroke="#fbbf24"
-              strokeWidth="3"
-            />
-            <text
-              x={x + SIDE}
-              y={y + 5}
-              textAnchor="middle"
-              fontSize="14"
-              fill="white"
-              fontWeight="bold"
-              pointerEvents="none"
-            >
-              {day}
-            </text>
+  <div className="bg-black/40 rounded-2xl p-4 h-[420px] flex flex-col overflow-hidden">
+    
+    {/* Header */}
+    <h3 className="text-2xl my-2 text-center text-white shrink-0">
+      Skin Care Routine
+    </h3>
+
+    {/* SVG Container */}
+    <div className="flex-1 flex items-center justify-center overflow-hidden">
+      <div className="w-full h-full max-h-[320px]">
+        <svg
+          viewBox={`0 0 ${viewWidth} ${viewHeight}`}
+          className="w-full h-auto max-h-full"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <g transform={`translate(${padding}, ${padding + HEX_HEIGHT / 2})`}>
+            {HEXES.map(({ day, x, y }) => (
+              <g
+                key={day}
+                onClick={() => toggle(day)}
+                className="cursor-pointer"
+              >
+                <polygon
+                  points={getHexPoints(x + SIDE, y, SIDE)}
+                  fill={days[day] ? "#DA498D" : "#1e293b"}
+                  stroke="#FAC67A"
+                  strokeWidth="1"
+                />
+                <text
+                  x={x + SIDE}
+                  y={y + 5}
+                  textAnchor="middle"
+                  fontSize="14"
+                  fill="white"
+                  fontWeight="bold"
+                  pointerEvents="none"
+                >
+                  {day}
+                </text>
+              </g>
+            ))}
           </g>
-        ))}
-      </g>
-    </svg>
-  );
+        </svg>
+      </div>
+    </div>
+  </div>
+);
+
+
 }
