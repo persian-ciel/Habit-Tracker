@@ -20,7 +20,7 @@ export default function ChooseHabits({ allHabits, selectedIds, toggleSelect }: P
             key={habit.id}
             className={`rounded-md px-4 py-2 mr-2 mb-2 transition-colors cursor-pointer ${
               isSelected
-                ? "bg-[#DA498D] text-white"
+                ? "bg-[#F96E5B] text-white"
                 : "border border-white text-white hover:opacity-90"
             }`}
             onClick={() => toggleSelect(habit.id)}

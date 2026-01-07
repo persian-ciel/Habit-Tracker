@@ -58,14 +58,14 @@ export default function EditableRow({
 
   return (
     <div
-      className={`bg-white/10 flex gap-2 mb-2 px-4 py-4 rounded-lg items-start transition-all
+      className={`bg-white/10 flex gap-2 mb-2 px-4 py-4 rounded-lg items-center transition-all
         ${isEditing ? "scale-[1.02]" : ""}`}
     >
       <input
         type="checkbox"
         checked={item.completed || false}
         onChange={(e) => onToggleComplete(item.id, e.target.checked)}
-        className="w-5 h-5 mt-1 accent-[#DA498D] cursor-pointer"
+        className="w-5 h-5 mt-1 mr-2 accent-[#3F9AAE] cursor-pointer "
         disabled={isEditing}
       />
 
@@ -84,13 +84,13 @@ export default function EditableRow({
           <div className="flex gap-2">
             <button
               onClick={handleSave}
-              className="bg-green-500 text-white px-4 py-1.5 rounded"
+              className="bg-green-500 text-white px-4 py-1.5 rounded cursor-pointer"
             >
               Save
             </button>
             <button
               onClick={handleCancel}
-              className="bg-gray-400 text-white px-4 py-1.5 rounded"
+              className="bg-gray-400 text-white px-4 py-1.5 rounded cursor-pointer"
             >
               Cancel
             </button>
@@ -110,14 +110,14 @@ export default function EditableRow({
             {!item.completed && (
               <button
                 onClick={() => onStartEdit(item.id)}
-                className="text-yellow-400 hover:text-yellow-600 px-2"
+                className="text-yellow-400 hover:text-yellow-600 px-2 cursor-pointer"
               >
                 Edit
               </button>
             )}
             <button
               onClick={() => onDelete(item.id)}
-              className="text-red-500 hover:text-red-700 px-2"
+              className="text-red-500 hover:text-red-700 px-2 cursor-pointer"
             >
               Delete
             </button>

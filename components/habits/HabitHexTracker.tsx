@@ -89,10 +89,10 @@ export default function HabitHexTracker({ habitId, year, month }: Props) {
   };
 
   return (
-  <div className="bg-black/40 rounded-2xl p-4 h-[420px] flex flex-col overflow-hidden">
+  <div className="rounded-2xl p-4 h-[420px] flex flex-col overflow-hidden shadow-xl" style={{ backgroundImage: "url('/16337670_v805-kul-08.jpg')", backgroundSize: "cover", backgroundPosition: "center center" }}>
     
     {/* Header */}
-    <h3 className="text-2xl my-2 text-center text-white shrink-0">
+    <h3 className="text-2xl  mt-10 text-center text-white shrink-0">
       Skin Care Routine
     </h3>
 
@@ -113,7 +113,7 @@ export default function HabitHexTracker({ habitId, year, month }: Props) {
               >
                 <polygon
                   points={getHexPoints(x + SIDE, y, SIDE)}
-                  fill={days[day] ? "#DA498D" : "#1e293b"}
+                  fill={days[day] ? "#3F9AAE" : "#1e293b"}
                   stroke="#FAC67A"
                   strokeWidth="1"
                 />

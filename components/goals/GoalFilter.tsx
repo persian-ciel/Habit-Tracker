@@ -13,11 +13,11 @@ export default function GoalFilter({ value, onChange }: GoalFilterProps) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value as "all" | "completed" | "incomplete")}
-        className="bg-black/40 text-white px-3 py-1 rounded"
+        className="bg-black/40 text-white px-3 py-1 rounded cursor-pointer"
       >
-        <option value="all">All</option>
-        <option value="completed">Completed</option>
-        <option value="incomplete">Incomplete</option>
+        <option value="all" className="bg-black/80">All</option>
+        <option value="completed" className="bg-black/80">Completed</option>
+        <option value="incomplete" className="bg-black/80">Incomplete</option>
       </select>
     </div>
   );

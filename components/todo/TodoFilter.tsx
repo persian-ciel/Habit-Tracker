@@ -21,7 +21,7 @@ export default function TodoFilter({ onChange }: TodoFilterProps) {
     <div className="flex gap-4 mb-4">
 
       <select
-        className="p-2 bg-white/20 rounded"
+        className="p-2 bg-white/20 rounded cursor-pointer"
         value={priority}
         onChange={(e) => handleChange({ priority: e.target.value })}
       >
@@ -33,7 +33,7 @@ export default function TodoFilter({ onChange }: TodoFilterProps) {
 
 
       <select
-        className="p-2 bg-white/20 rounded"
+        className="p-2 bg-white/20 rounded cursor-pointer"
         value={completed}
         onChange={(e) => handleChange({ completed: e.target.value })}
       >

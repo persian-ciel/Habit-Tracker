@@ -27,7 +27,7 @@ export default function GoalInput({ text, period, onTextChange, onPeriodChange, 
         <option value="monthly" className="bg-black/80">Monthly</option>
         <option value="yearly" className="bg-black/80">Yearly</option>
       </select>
-      <button onClick={onAdd} className="bg-[#FAC67A] text-black px-4 rounded-lg cursor-pointer">Add</button>
+      <button onClick={onAdd} className="bg-[#FFE2AF] text-black px-4 rounded-lg cursor-pointer">Add</button>
     </div>
   );
 }

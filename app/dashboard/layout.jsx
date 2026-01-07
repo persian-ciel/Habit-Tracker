@@ -56,7 +56,7 @@ export default function DashboardLayout({ children }) {
         </button>
 
         {!collapsed && (
-          <h2 className="text-2xl font-bold mb-4 transition-opacity text-[#FAC67A]">
+          <h2 className="text-2xl font-bold mb-4 transition-opacity text-[#FFE2AF]">
             Ciel Mind
           </h2>
         )}
@@ -70,7 +70,7 @@ export default function DashboardLayout({ children }) {
                 pathname === item.path ? "bg-[#424242] font-bold" : ""
               }`}
             >
-              <span className="text-[#DA498D]">{item.icon}</span>
+              <span className="text-[#F96E5B]">{item.icon}</span>
               {!collapsed && <span>{item.title}</span>}
             </Link>
           ))}

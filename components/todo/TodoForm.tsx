@@ -92,7 +92,7 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
       />
       <div className="flex flex-col gap-4">
         <select
-          className="p-2 bg-white/20 rounded"
+          className="p-2 bg-white/20 rounded cursor-pointer"
           value={form.priority}
           onChange={(e) =>
             setForm({ ...form, priority: e.target.value as TodoFormData["priority"] })
@@ -113,14 +113,14 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
           />
           <Calendar
             onClick={openPicker}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FAC67A] cursor-pointer"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FFE2AF] cursor-pointer"
           />
         </div>
       </div>
       <button
         onClick={handleSubmit}
         disabled={loading}
-        className="bg-[#DA498D] hover:bg-[#69247C] px-4 py-2 rounded mt-5"
+        className="bg-[#F96E5B] hover:bg-[#F96E5B]/80 px-4 py-2 rounded mt-5 cursor-pointer"
       >
         {loading ? "Adding..." : "Add Task"}
       </button>

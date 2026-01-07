@@ -19,12 +19,12 @@ const WaterTracker = () => {
   const totalMl = filledCount * GLASS_ML;
 
   return (
-  <div className="bg-black/40 backdrop-blur-md rounded-2xl p-4 h-[420px] flex flex-col">
+  <div className=" backdrop-blur-md rounded-2xl p-4 h-[420px] flex shadow-xl flex-col" style={{ backgroundImage: "url('/66241620_9590059.jpg')", backgroundSize: "cover", backgroundPosition: "center center" }}>
     
     {/* Header */}
-    <div className="text-center text-white shrink-0">
-      <h3 className="text-lg font-semibold">Water Tracker</h3>
-      <p className="text-sm text-white/70">
+    <div className="text-center text-black shrink-0">
+      <h3 className="text-lg font-semibold mt-5">Water Tracker</h3>
+      <p className="text-sm text-black/70">
         {totalMl} ml / {TOTAL_GLASSES * GLASS_ML} ml
       </p>
     </div>
@@ -41,7 +41,7 @@ const WaterTracker = () => {
               onClick={() => toggleGlass(index)}
               className="relative h-20 w-full flex justify-center items-end"
             >
-              <div className="relative w-10 h-16 border-2 border-white/40 rounded-b-lg rounded-t-sm overflow-hidden">
+              <div className="relative w-10 h-16 border-2 border-black/40 rounded-b-lg rounded-t-sm overflow-hidden">
                 <div
                   className={`
                     absolute bottom-0 left-0 w-full transition-all duration-300
@@ -49,7 +49,7 @@ const WaterTracker = () => {
                     bg-blue-500/80
                   `}
                 />
-                <div className="absolute left-1 top-1 w-1 h-full bg-white/20 rounded-full" />
+                <div className="absolute left-1 top-1 w-1 h-full bg-black/20 rounded-full" />
               </div>
             </button>
           );
@@ -58,7 +58,7 @@ const WaterTracker = () => {
     </div>
 
     {/* Footer */}
-    <div className="text-center text-xs text-white/60 shrink-0">
+    <div className="text-center text-xs text-black/80 shrink-0">
       Each glass = {GLASS_ML}ml
     </div>
   </div>

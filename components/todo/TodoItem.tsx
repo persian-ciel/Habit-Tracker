@@ -94,7 +94,7 @@ export default function TodoItem({
     >
       {isFocused ? (
         <>
-          {/* ===== حالت Edit (فقط وقتی complete نیست) ===== */}
+ 
           <input
             className="w-full text-xl font-semibold bg-white/20 rounded px-3 py-2"
             value={formData.title}
@@ -113,7 +113,7 @@ export default function TodoItem({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             <select
-              className="bg-white/20 py-2 rounded px-4"
+              className="bg-white/20 py-2 rounded px-4 cursor-pointer"
               value={formData.priority}
               onChange={(e) =>
                 setFormData({ ...formData, priority: e.target.value as any })
@@ -125,7 +125,7 @@ export default function TodoItem({
             </select>
 
             <select
-              className="bg-white/20 py-2 rounded px-4"
+              className="bg-white/20 py-2 rounded px-4 cursor-pointer"
               value={formData.status}
               onChange={(e) =>
                 setFormData({
@@ -135,14 +135,14 @@ export default function TodoItem({
                 })
               }
             >
-              <option value="pending" className="bg-black/80">Pending</option>
+              <option value="pending" className="bg-black/80 cu">Pending</option>
               <option value="completed" className="bg-black/80">Completed</option>
               <option value="cancelled" className="bg-black/80">Cancelled</option>
             </select>
 
             <input
               type="date"
-              className="bg-white/20 py-2 rounded px-4"
+              className="bg-white/20 py-2 rounded px-4 cursor-pointer"
               value={dateForInput}
               onChange={(e) =>
                 setFormData({ ...formData, dueDate: e.target.value })
@@ -153,14 +153,14 @@ export default function TodoItem({
           <div className="flex gap-4 mt-6">
             <button
               onClick={handleSave}
-              className="bg-[#DA498D] px-6 py-2 rounded"
+              className="bg-[#F96E5B] px-6 py-2 rounded cursor-pointer"
               disabled={loading}
             >
               Save
             </button>
             <button
               onClick={handleCancel}
-              className="border border-yellow-400 px-6 py-2 rounded text-yellow-400"
+              className="border border-white px-6 py-2 rounded text-white cursor-pointer"
             >
               Cancel
             </button>
@@ -169,9 +169,9 @@ export default function TodoItem({
         </>
       ) : (
         <>
-          {/* ===== حالت لیست ===== */}
+
           <div className="flex justify-between items-center gap-4">
-            {/* ستون محتوا */}
+
             <div className="flex flex-col gap-1">
               <h3
                 className={`text-lg font-semibold ${
@@ -194,7 +194,6 @@ export default function TodoItem({
                 </div>
               )}
 
-              {/* ✅ Complete */}
               <label
                 className={`flex items-center gap-2 mt-2 text-sm ${
                   completed
@@ -219,7 +218,7 @@ export default function TodoItem({
             <div className="flex flex-row justify-center  gap-2">
               <button
                 onClick={() => onDelete(id)}
-                className="text-red-400 hover:text-red-600"
+                className="text-red-400 hover:text-red-600 cursor-pointer"  
               >
                 <Trash2 />
               </button>
@@ -227,7 +226,7 @@ export default function TodoItem({
               {!completed && (
                 <button
                   onClick={onFocus}
-                  className="text-yellow-400 hover:text-yellow-600"
+                  className="text-yellow-400 hover:text-yellow-600 cursor-pointer"
                 >
                   <NotebookTabs />
                 </button>
