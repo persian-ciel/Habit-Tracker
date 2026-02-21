@@ -28,48 +28,46 @@ export default function ReadingTracker() {
     <div
       className="
         relative 
-        w-full 
-        max-w-md 
+        w-full
         mx-auto 
         h-[420px]
         rounded-2xl 
-        p-4 
-        flex 
+        p-8
+        flex
         flex-col 
         justify-start
       "
       style={{
-        backgroundImage: "url('/15364620_5597956.jpg')",
+        backgroundImage: "url('/2147923475.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* Title */}
+
       <h3 className="text-base font-semibold text-center text-black">
         Reading Tracker
       </h3>
 
-      {/* Month */}
+
       <h4 className="text-center text-black font-medium text-sm">
         {monthName} {year}
       </h4>
 
-      {/* Week Days */}
-      <div className="grid grid-cols-7 gap-4 text-center text-xs text-black font-semibold mt-7 mx-auto">
+
+      <div className="grid grid-cols-7 gap-4 text-center text-xs text-black font-semibold mt-10 mx-auto">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
           <div key={d}>{d}</div>
         ))}
       </div>
 
-      {/* Calendar */}
       <div className="mt-4 flex justify-center">
-        <div className="grid grid-cols-7 gap-2">
-          {/* Empty cells */}
+        <div className="grid grid-cols-7 sm:gap-2 gap-5 ">
+
           {Array.from({ length: firstDayOfWeek }).map((_, i) => (
             <div key={"empty-" + i} className="w-9 h-9" />
           ))}
 
-          {/* Days */}
+
           {Array.from({ length: daysInMonth }).map((_, i) => {
             const day = i + 1;
             const hour = days[day] ?? 0;
@@ -109,8 +107,7 @@ export default function ReadingTracker() {
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="flex justify-center gap-3 text-xs text-black/70 mt-7">
+      <div className="flex justify-center gap-3 text-xs text-black/70 mt-10">
         {HOURS.map((h) => {
           const color =
             h === 0

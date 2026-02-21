@@ -91,7 +91,7 @@ export default function HabitTrackerPage() {
               return (
                 <div
                   key={habit.id}
-                  className="w-full sm:w-[48%] lg:w-[30%]"
+                  className="w-full sm:w-full lg:w-[48%] xl:w-[32%]"
                 >
                   {/* DAILY - HEX */}
                   {habit.tracking_type === "daily" &&
@@ -120,7 +120,7 @@ export default function HabitTrackerPage() {
 
                     {habit.tracking_type === "daily" &&
                     habit.tracking_ui === "reading" && (
-                    <ReadingTracker year={2026} month={1} />
+                    <ReadingTracker />
 )}
                 </div>
               );
