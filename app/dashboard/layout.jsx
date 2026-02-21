@@ -107,7 +107,7 @@ export default function DashboardLayout({ children }) {
             <Menu size={22} />
           </button>
 
-          <div className="flex-1 flex items-center justify-between">
+          <div className="flex-1 flex items-center justify-between ml-2">
             <UserName />
             <TodayDate />
           </div>

@@ -10,5 +10,5 @@ export default function UserName() {
 
   if (!data?.session) return <span>Not logged in</span>;
 
-  return <span className="text-3xl font-bold"> {data.user.name} </span>;
+  return <span className="sm:text-2xl text-sm font-bold"> {data.user.name} </span>;
 }
