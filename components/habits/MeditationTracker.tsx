@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 const HOURS = [0, 1, 2, 3, 4];
 
-export default function ReadingTracker() {
+export default function MeditationTracker() {
   const today = new Date();
 
   const year = today.getFullYear();
@@ -38,14 +38,14 @@ export default function ReadingTracker() {
         justify-start
       "
       style={{
-        backgroundImage: "url('/2147923475.jpg')",
+        backgroundImage: "url('/16337529_v800-mynt-05.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
 
       <h3 className="text-base font-bold text-center text-black">
-        Reading Tracker
+        Meditation Tracker
       </h3>
 
 
@@ -144,13 +144,13 @@ export default function ReadingTracker() {
                 const color =
                   h === 0
                     ? "#1e293b"
-              : h === 1
-              ? "#09637E"
-              : h === 2
-              ? "#088395"
-              : h === 3
-              ? "#7AB2B2"
-              : "#9fcccc";
+                    : h === 1
+                    ? "#09637E"
+                    : h === 2
+                    ? "#088395"
+                    : h === 3
+                    ? "#7AB2B2"
+                    : "#9fcccc";
                 return (
                   <button
                     key={h}

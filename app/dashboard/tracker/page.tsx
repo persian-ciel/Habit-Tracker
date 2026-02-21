@@ -8,6 +8,7 @@ import HabitHexTracker from "@/components/habits/HabitHexTracker";
 import WaterTracker from "@/components/habits/WaterTracker";
 import ExerciseTracker from "@/components/habits/ExerciseTracker";
 import ReadingTracker from "@/components/habits/ReadingTracker";
+import MeditationTracker from "@/components/habits/MeditationTracker";
 
 import { Habit } from "@/lib/types";
 
@@ -46,7 +47,7 @@ export default function HabitTrackerPage() {
         id: 5,
         title: "Meditation",
         tracking_type: "daily",
-        tracking_ui: "hex",
+        tracking_ui: "meditation", // مهم: همین مقدار برای MeditationTracker
       },
     ]);
   }, []);
@@ -62,7 +63,7 @@ export default function HabitTrackerPage() {
   return (
     <div>
       {/* Choose Habits */}
-      <section className="mb-8 rounded-xl shadow-md p-2">
+      <section className="mb-8 rounded-xl shadow-md p-4">
         <h2 className="text-2xl font-light mb-6">
           Choose the habits you want to track
         </h2>
@@ -94,31 +95,26 @@ export default function HabitTrackerPage() {
                   className="w-full sm:w-full lg:w-[48%] xl:w-[32%]"
                 >
                   {/* DAILY - HEX */}
-                  {habit.tracking_type === "daily" &&
-                    habit.tracking_ui === "hex" && (
-                      <HabitHexTracker
-                        habitId={habit.id}
-                        year={2026}
-                        month={1}
-                      />
-                    )}
+                  {habit.tracking_type === "daily" && habit.tracking_ui === "hex" && (
+                    <HabitHexTracker habitId={habit.id} year={2026} month={1} />
+                  )}
 
                   {/* DAILY - GRID (Exercise) */}
-                  {habit.tracking_type === "daily" &&
-                    habit.tracking_ui === "grid" && (
-                      <ExerciseTracker />
-                    )}
+                  {habit.tracking_type === "daily" && habit.tracking_ui === "grid" && (
+                    <ExerciseTracker />
+                  )}
 
                   {/* COUNT - COUNTER (Water) */}
                   {habit.tracking_type === "count" &&
-                    habit.tracking_ui === "counter" && (
-                      <WaterTracker />
-                    )}
+                    habit.tracking_ui === "counter" && <WaterTracker />}
 
-                    {habit.tracking_type === "daily" &&
-                    habit.tracking_ui === "reading" && (
-                    <ReadingTracker />
-)}
+                  {/* DAILY - READING */}
+                  {habit.tracking_type === "daily" &&
+                    habit.tracking_ui === "reading" && <ReadingTracker />}
+
+                  {/* DAILY - MEDITATION */}
+                  {habit.tracking_type === "daily" &&
+                    habit.tracking_ui === "meditation" && <MeditationTracker />}
                 </div>
               );
             })}

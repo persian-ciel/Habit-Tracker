@@ -85,7 +85,7 @@ export default function DashboardLayout({ children }) {
                 ${collapsed ? "md:justify-center" : ""}
               `}
             >
-              <span className="text-[#F96E5B]">{item.icon}</span>
+              <span className="text-[#b6e5e5]">{item.icon}</span>
               {!collapsed && <span>{item.title}</span>}
             </Link>
           ))}

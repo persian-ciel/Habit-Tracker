@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 const HOURS = [0, 1, 2, 3, 4];
 
-export default function ReadingTracker() {
+export default function ExerciseTracker() {
   const today = new Date();
 
   const year = today.getFullYear();
@@ -36,10 +36,10 @@ export default function ReadingTracker() {
         flex
         flex-col 
         justify-start
-        text-white
+        text-black
       "
       style={{
-        backgroundImage: "url('/14546395_rm183-wan-11.jpg')",
+        backgroundImage: "url('/20170987_v1053-012.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -77,12 +77,12 @@ export default function ReadingTracker() {
               hour === 0
                 ? "#1e293b"
                 : hour === 1
-                ? "#3b82f6"
+                ? "#09637E"
                 : hour === 2
-                ? "#2563eb"
+                ? "#088395"
                 : hour === 3
-                ? "#1e40af"
-                : "#7c3aed";
+                ? "#7AB2B2"
+                : "#9fcccc";
 
             return (
               <button
@@ -108,18 +108,18 @@ export default function ReadingTracker() {
         </div>
       </div>
 
-      <div className="flex justify-center gap-3 text-xs text-white/70 mt-10">
+      <div className="flex justify-center gap-3 text-xs text-black/70 mt-10">
         {HOURS.map((h) => {
           const color =
             h === 0
               ? "#1e293b"
               : h === 1
-              ? "#3b82f6"
+              ? "#09637E"
               : h === 2
-              ? "#2563eb"
+              ? "#088395"
               : h === 3
-              ? "#1e40af"
-              : "#7c3aed";
+              ? "#7AB2B2"
+              : "#9fcccc";
           return (
             <div key={h} className="flex items-center gap-1">
               <span
@@ -145,13 +145,13 @@ export default function ReadingTracker() {
                 const color =
                   h === 0
                     ? "#1e293b"
-                    : h === 1
-                    ? "#3b82f6"
-                    : h === 2
-                    ? "#2563eb"
-                    : h === 3
-                    ? "#1e40af"
-                    : "#7c3aed";
+              : h === 1
+              ? "#09637E"
+              : h === 2
+              ? "#088395"
+              : h === 3
+              ? "#7AB2B2"
+              : "#9fcccc";
                 return (
                   <button
                     key={h}
