@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { Edit, Trash2 } from "lucide-react";
 
 type Period = "weekly" | "monthly" | "yearly";
 
@@ -58,19 +59,20 @@ export default function EditableRow({
 
   return (
     <div
-      className={`bg-white/10 flex gap-2 mb-2 px-4 py-4 rounded-lg items-center transition-all
+      className={`bg-white/10 flex gap-2 mb-2 px-3 py-3 sm:px-4 sm:py-4 rounded-lg items-center transition-all
         ${isEditing ? "scale-[1.02]" : ""}`}
     >
+      {/* Checkbox */}
       <input
         type="checkbox"
         checked={item.completed || false}
         onChange={(e) => onToggleComplete(item.id, e.target.checked)}
-        className="w-5 h-5 mt-1 mr-2 accent-[#3F9AAE] cursor-pointer "
+        className="w-4 h-4 sm:w-5 sm:h-5 mt-1 mr-2 accent-[#3F9AAE] cursor-pointer"
         disabled={isEditing}
       />
 
       {isEditing ? (
-        <div className="flex-1 flex flex-col gap-3">
+        <div className="flex-1 flex flex-col gap-2 sm:gap-3">
           <textarea
             ref={textareaRef}
             value={value}
@@ -79,18 +81,18 @@ export default function EditableRow({
               e.target.style.height = "auto";
               e.target.style.height = e.target.scrollHeight + "px";
             }}
-            className="border px-3 py-2 rounded resize-none min-h-[150px]"
+            className="border px-2 py-1.5 sm:px-3 sm:py-2 rounded resize-none min-h-[120px] sm:min-h-[150px] text-sm sm:text-base"
           />
           <div className="flex gap-2">
             <button
               onClick={handleSave}
-              className="bg-green-500 text-white px-4 py-1.5 rounded cursor-pointer"
+              className="bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-1.5 rounded text-sm sm:text-base cursor-pointer"
             >
               Save
             </button>
             <button
               onClick={handleCancel}
-              className="bg-gray-400 text-white px-4 py-1.5 rounded cursor-pointer"
+              className="bg-gray-400 text-white px-3 py-1 sm:px-4 sm:py-1.5 rounded text-sm sm:text-base cursor-pointer"
             >
               Cancel
             </button>
@@ -99,27 +101,46 @@ export default function EditableRow({
       ) : (
         <div className="flex-1 flex justify-between items-center">
           <div
-            className={`flex-1 whitespace-normal ${
+            className={`flex-1 whitespace-normal text-sm sm:text-base ${
               item.completed ? "line-through text-gray-400" : ""
             }`}
           >
             {item.content}
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-1 sm:gap-2 items-center">
             {!item.completed && (
-              <button
-                onClick={() => onStartEdit(item.id)}
-                className="text-yellow-400 hover:text-yellow-600 px-2 cursor-pointer"
-              >
-                Edit
-              </button>
+              <>
+                {/* Edit text دسکتاپ */}
+                <button
+                  onClick={() => onStartEdit(item.id)}
+                  className="text-yellow-400 hover:text-yellow-600 px-1 sm:px-2 cursor-pointer hidden sm:inline text-sm"
+                >
+                  Edit
+                </button>
+                {/* Edit آیکون موبایل */}
+                <button
+                  onClick={() => onStartEdit(item.id)}
+                  className="text-yellow-400 hover:text-yellow-600 px-1 cursor-pointer sm:hidden"
+                >
+                  <Edit size={16} />
+                </button>
+              </>
             )}
+
+            {/* Delete دسکتاپ */}
             <button
               onClick={() => onDelete(item.id)}
-              className="text-red-500 hover:text-red-700 px-2 cursor-pointer"
+              className="text-red-500 hover:text-red-700 px-1 sm:px-2 cursor-pointer hidden sm:inline text-sm"
             >
               Delete
+            </button>
+            {/* Delete آیکون موبایل */}
+            <button
+              onClick={() => onDelete(item.id)}
+              className="text-red-500 hover:text-red-700 px-1 cursor-pointer sm:hidden"
+            >
+              <Trash2 size={16} />
             </button>
           </div>
         </div>

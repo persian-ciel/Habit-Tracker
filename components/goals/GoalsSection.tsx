@@ -81,7 +81,7 @@ export default function GoalsSection({
   return (
     <div className="bg-black/20 rounded-lg p-4 h-[70vh] flex flex-col">
       <div className="flex items-center mb-2 col-span-3">
-        <div className="w-1/3 ">
+        <div className="w-1/3">
           <GoalFilter value={completedFilter} onChange={setCompletedFilter} />
         </div>
 
