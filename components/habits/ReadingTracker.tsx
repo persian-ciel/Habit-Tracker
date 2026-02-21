@@ -32,7 +32,8 @@ export default function ReadingTracker() {
         mx-auto 
         h-[420px]
         rounded-2xl 
-        p-8
+        sm:p-8
+        p-5
         flex
         flex-col 
         justify-start
@@ -54,14 +55,14 @@ export default function ReadingTracker() {
       </h4>
 
 
-      <div className="grid grid-cols-7 gap-7 sm:gap-4 text-center text-xs text-black font-semibold mt-10 mx-auto">
+      <div className="grid grid-cols-7 gap-4 sm:gap-4 text-center text-xs text-black font-semibold mt-10 mx-auto">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
           <div key={d}>{d}</div>
         ))}
       </div>
 
       <div className="mt-4 flex justify-center">
-        <div className="grid grid-cols-7 sm:gap-2 gap-5 ">
+        <div className="grid grid-cols-7 sm:gap-2 gap-2 ">
 
           {Array.from({ length: firstDayOfWeek }).map((_, i) => (
             <div key={"empty-" + i} className="w-9 h-9" />
@@ -131,7 +132,6 @@ export default function ReadingTracker() {
         })}
       </div>
 
-      {/* Picker */}
       {pickerDay && (
         <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
           <div className="bg-slate-900 rounded-xl p-4 space-y-3 w-[90%] max-w-xs">

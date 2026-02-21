@@ -21,7 +21,6 @@ const WaterTracker = () => {
   return (
   <div className=" backdrop-blur-md rounded-2xl p-4 h-[420px] flex shadow-xl flex-col" style={{ backgroundImage: "url('/66241620_9590059.jpg')", backgroundSize: "cover", backgroundPosition: "center center" }}>
     
-    {/* Header */}
     <div className="text-center text-black shrink-0">
       <h3 className="text-lg font-semibold mt-5">Water Tracker</h3>
       <p className="text-sm text-black/70">
@@ -29,7 +28,6 @@ const WaterTracker = () => {
       </p>
     </div>
 
-    {/* Body */}
     <div className="flex-1 flex items-center justify-center">
       <div className="grid grid-cols-5 gap-x-6 gap-y-2">
         {Array.from({ length: TOTAL_GLASSES }).map((_, index) => {
@@ -57,7 +55,6 @@ const WaterTracker = () => {
       </div>
     </div>
 
-    {/* Footer */}
     <div className="text-center text-xs text-black/80 shrink-0">
       Each glass = {GLASS_ML}ml
     </div>

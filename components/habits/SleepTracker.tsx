@@ -1,127 +1,63 @@
 "use client";
-import React, { useState } from "react";
 
-interface Props {
-  year: number;
-  month: number; // 1-12
-}
+import { useState } from "react";
 
-// می‌خوای 0 تا 4 ساعت
-const HOURS = [0, 1, 2, 3, 4];
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const HOURS = 8;
 
-export default function ReadingTracker({ year, month }: Props) {
-  const daysInMonth = new Date(year, month, 0).getDate();
-  const [days, setDays] = useState<Record<number, number>>({});
-  const [pickerDay, setPickerDay] = useState<number | null>(null);
+export default function SleepTracker() {
+  const [sleepData, setSleepData] = useState<number[]>(Array(DAYS.length).fill(0));
 
-  const setHour = (day: number, hour: number) => {
-    setDays((prev) => ({ ...prev, [day]: hour }));
-    setPickerDay(null);
+  const handleClick = (dayIndex: number, hourIndex: number) => {
+    const newData = [...sleepData];
+    newData[dayIndex] = hourIndex + 1;
+    setSleepData(newData);
   };
 
   return (
-    <div className="bg-gradient-to-br from-purple-900/20 via-black/40 to-indigo-900/20 rounded-2xl p-4 h-[420px] flex flex-col overflow-hidden">
-      
-      {/* Header */}
-      <h3 className="text-lg font-semibold text-center text-white mt-5">
-        Reading Tracker
-      </h3>
+    <div className="bg-black/20 rounded-lg p-4 w-full max-w-3xl mx-auto">
+      <h2 className="text-center text-xl sm:text-2xl font-medium mb-6">
+        Sleep Tracker
+      </h2>
 
-      {/* Grid of days */}
-      <div className="flex-1 flex items-center justify-center mt-4">
-        <div className="grid grid-cols-7 gap-2">
-          {Array.from({ length: daysInMonth }).map((_, i) => {
-            const day = i + 1;
-            const hour = days[day] ?? 0;
+      <div className="flex flex-col gap-5">
+        {DAYS.map((day, dayIdx) => {
+          const filledHours = sleepData[dayIdx];
 
-            // رنگ روزها بر اساس ساعت
-            const bgColor =
-              hour === 0
-                ? "#1e293b"
-                : hour === 1
-                ? "#3b82f6"
-                : hour === 2
-                ? "#2563eb"
-                : hour === 3
-                ? "#1e40af"
-                : "#7c3aed";
-
-            return (
-              <button
-                key={day}
-                onClick={() => setPickerDay(day)}
-                className="relative w-10 h-10 rounded-md border border-white/20 flex items-center justify-center text-white text-sm font-bold cursor-pointer"
-                style={{ backgroundColor: bgColor }}
-              >
-                {day}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Legend */}
-      <div className="flex justify-center gap-3 text-xs text-white/70 mt-2">
-        {HOURS.map((h) => {
-          const color =
-            h === 0
-              ? "#1e293b"
-              : h === 1
-              ? "#3b82f6"
-              : h === 2
-              ? "#2563eb"
-              : h === 3
-              ? "#1e40af"
-              : "#7c3aed";
           return (
-            <div key={h} className="flex items-center gap-1">
-              <span className="w-3 h-3 rounded-sm" style={{ backgroundColor: color }} />
-              {h}h
+            <div key={day} className="flex items-center gap-3 relative">
+              {/* Day label */}
+              <div className="w-14 text-right font-medium">{day}</div>
+
+              {/* Progress bar container */}
+              <div className="relative flex-1  ">
+                {/* Background bar */}
+                <div className="absolute top-1/2  -translate-y-1/2 h-3 w-full bg-gray-400/20 rounded-full" />
+
+                {/* Filled bar */}
+                <div
+                  className="absolute  py-2 top-1/2 -translate-y-1/2 h-3 bg-[#3F9AAE] rounded-full transition-all duration-300"
+                  style={{ width: `${(filledHours / HOURS) * 100}%` }}
+                />
+
+                {/* Dots */}
+                <div className="relative flex gap-10 cursor-pointer px-4 py-2">
+                  {[...Array(HOURS)].map((_, hourIdx) => (
+                    <div
+                      key={hourIdx}
+                      onClick={() => handleClick(dayIdx, hourIdx)}
+                      className="w-1 h-1 sm:w-2 sm:h-2 rounded-full bg-white border border-gray-500 shadow-sm transition hover:scale-110"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Hour count */}
+              <div className="w-8 text-sm text-center font-medium">{filledHours}h</div>
             </div>
           );
         })}
       </div>
-
-      {/* Hour Picker Overlay */}
-      {pickerDay && (
-        <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
-          <div className="bg-slate-900 rounded-xl p-4 space-y-3">
-            <p className="text-white text-sm text-center">
-              Day {pickerDay} – How many hours read?
-            </p>
-
-            <div className="flex gap-2 justify-center">
-              {HOURS.map((h) => {
-                const color =
-                  h === 0
-                    ? "#1e293b"
-                    : h === 1
-                    ? "#3b82f6"
-                    : h === 2
-                    ? "#2563eb"
-                    : h === 3
-                    ? "#1e40af"
-                    : "#7c3aed";
-                return (
-                  <button
-                    key={h}
-                    onClick={() => setHour(pickerDay, h)}
-                    className="w-8 h-8 rounded-md border border-white/20 cursor-pointer"
-                    style={{ backgroundColor: color }}
-                  />
-                );
-              })}
-            </div>
-
-            <button
-              onClick={() => setPickerDay(null)}
-              className="text-xs text-white/60 block mx-auto mt-2 cursor-pointer" 
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

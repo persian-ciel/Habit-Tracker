@@ -11,6 +11,7 @@ import ReadingTracker from "@/components/habits/ReadingTracker";
 import MeditationTracker from "@/components/habits/MeditationTracker";
 
 import { Habit } from "@/lib/types";
+import SleepTracker from "@/components/habits/SleepTracker";
 
 export default function HabitTrackerPage() {
   const [allHabits, setAllHabits] = useState<Habit[]>([]);
@@ -48,6 +49,12 @@ export default function HabitTrackerPage() {
         title: "Meditation",
         tracking_type: "daily",
         tracking_ui: "meditation", // مهم: همین مقدار برای MeditationTracker
+      },
+      {
+        id: 6,
+        title: "Sleep Tracker", // SleepTracker جدید
+        tracking_type: "daily",
+        tracking_ui: "sleep", // مقدار دلخواه برای شناسایی SleepTracker
       },
     ]);
   }, []);
@@ -115,6 +122,9 @@ export default function HabitTrackerPage() {
                   {/* DAILY - MEDITATION */}
                   {habit.tracking_type === "daily" &&
                     habit.tracking_ui === "meditation" && <MeditationTracker />}
+
+                  {habit.tracking_type === "daily" &&
+                  habit.tracking_ui === "sleep" && <SleepTracker />}
                 </div>
               );
             })}
