@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useLayoutEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import EditableRow from "./EditableRow";
 import GoalFilter from "./GoalFilter";
 
@@ -35,70 +35,61 @@ export default function GoalsSection({
   const [currentPage, setCurrentPage] = useState(0);
   const [editingId, setEditingId] = useState<number | null>(null);
 
-  // 🟢 state فیلتر
   const [completedFilter, setCompletedFilter] = useState<
     "all" | "completed" | "incomplete"
   >("all");
 
-  // فیلتر کردن آیتم‌ها بر اساس period و completed
-  const filteredItems = items
-    .filter((i) => i.period === period)
-    .filter((i) => {
-      if (completedFilter === "completed") return i.completed;
-      if (completedFilter === "incomplete") return !i.completed;
-      return true;
+  const filteredItems = useMemo(() => {
+    return items
+      .filter((i) => i.period === period)
+      .filter((i) => {
+        if (completedFilter === "completed") return i.completed;
+        if (completedFilter === "incomplete") return !i.completed;
+        return true;
+      });
+  }, [items, period, completedFilter]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const containerHeight = containerRef.current.clientHeight;
+    const tempPages: Item[][] = [];
+    let current: Item[] = [];
+    let currentHeight = 0;
+
+    filteredItems.forEach((item) => {
+      const estimatedHeight = 60 + (item.content.length / 30) * 20;
+
+      if (currentHeight + estimatedHeight > containerHeight) {
+        tempPages.push(current);
+        current = [item];
+        currentHeight = estimatedHeight;
+      } else {
+        current.push(item);
+        currentHeight += estimatedHeight;
+      }
     });
 
-  useLayoutEffect(() => {
-  if (!containerRef.current) return;
+    if (current.length) tempPages.push(current);
 
-  // از items داخل effect استفاده می‌کنیم
-  const filtered = items
-    .filter((i) => i.period === period)
-    .filter((i) => {
-      if (completedFilter === "completed") return i.completed;
-      if (completedFilter === "incomplete") return !i.completed;
-      return true;
-    });
-
-  const containerHeight = containerRef.current.clientHeight;
-  const tempPages: Item[][] = [];
-  let current: Item[] = [];
-  let currentHeight = 0;
-
-  filtered.forEach((item) => {
-    const estimatedHeight = 60 + (item.content.length / 30) * 20;
-    if (currentHeight + estimatedHeight > containerHeight) {
-      tempPages.push(current);
-      current = [item];
-      currentHeight = estimatedHeight;
-    } else {
-      current.push(item);
-      currentHeight += estimatedHeight;
-    }
-  });
-
-  if (current.length) tempPages.push(current);
-
-  setPages(tempPages);
-  setCurrentPage(0);
-
-}, [period, completedFilter, items.length]); // ✅ فقط primitive ها
-
+    setPages(tempPages);
+    setCurrentPage(0);
+  }, [filteredItems]);
 
   const paginatedItems = pages[currentPage] || [];
 
   return (
     <div className="bg-black/20 rounded-lg p-4 h-[70vh] flex flex-col">
-      <div className="relative flex items-center mb-2">
-        <div className="absolute left-0">
+      <div className="flex items-center mb-2 col-span-3">
+        <div className="w-1/3 ">
           <GoalFilter value={completedFilter} onChange={setCompletedFilter} />
-          </div>
+        </div>
 
-        <h2 className=" mx-auto font-medium text-2xl mb-2 text-center">{title}</h2>
-        
+        <h2 className="mx-auto w-1/3  font-medium xl:text-2xl text-lg mb-2 text-center">
+          {title}
+        </h2>
+        <div className="w-1/3 "></div>
       </div>
-      
 
       <div ref={containerRef} className="flex-1 overflow-hidden">
         {paginatedItems.map((item) => {

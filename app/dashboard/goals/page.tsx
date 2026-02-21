@@ -124,7 +124,7 @@ export default function GoalsPage() {
         onAdd={addItem}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         {(["weekly", "monthly", "yearly"] as Period[]).map((p) => (
           <GoalsSection
             key={p}
