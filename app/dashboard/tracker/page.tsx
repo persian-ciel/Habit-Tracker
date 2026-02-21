@@ -106,10 +106,7 @@ export default function HabitTrackerPage() {
                   {/* DAILY - GRID (Exercise) */}
                   {habit.tracking_type === "daily" &&
                     habit.tracking_ui === "grid" && (
-                      <ExerciseTracker
-                        year={2026}
-                        month={1}
-                      />
+                      <ExerciseTracker />
                     )}
 
                   {/* COUNT - COUNTER (Water) */}

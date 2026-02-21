@@ -44,7 +44,7 @@ export default function ReadingTracker() {
       }}
     >
 
-      <h3 className="text-base font-semibold text-center text-black">
+      <h3 className="text-base font-bold text-center text-black">
         Reading Tracker
       </h3>
 
@@ -54,7 +54,7 @@ export default function ReadingTracker() {
       </h4>
 
 
-      <div className="grid grid-cols-7 gap-4 text-center text-xs text-black font-semibold mt-10 mx-auto">
+      <div className="grid grid-cols-7 gap-7 sm:gap-4 text-center text-xs text-black font-semibold mt-10 mx-auto">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
           <div key={d}>{d}</div>
         ))}
