@@ -48,13 +48,13 @@ export default function HabitTrackerPage() {
         id: 5,
         title: "Meditation",
         tracking_type: "daily",
-        tracking_ui: "meditation", // مهم: همین مقدار برای MeditationTracker
+        tracking_ui: "meditation", 
       },
       {
         id: 6,
-        title: "Sleep Tracker", // SleepTracker جدید
+        title: "Sleep Tracker", 
         tracking_type: "daily",
-        tracking_ui: "sleep", // مقدار دلخواه برای شناسایی SleepTracker
+        tracking_ui: "sleep",
       },
     ]);
   }, []);
