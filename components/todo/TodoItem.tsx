@@ -1,6 +1,13 @@
 "use client";
 
-import { NotebookTabs, Trash2, Calendar } from "lucide-react";
+import {
+  NotebookTabs,
+  Trash2,
+  Calendar,
+  CheckCircle,
+  XCircle,
+  Clock,
+} from "lucide-react";
 import { useState } from "react";
 
 export interface TodoItemData {
@@ -11,6 +18,7 @@ export interface TodoItemData {
   status: "pending" | "completed" | "cancelled";
   dueDate?: string;
   completed: boolean;
+  sort_order: number;
 }
 
 interface Props extends TodoItemData {
@@ -29,6 +37,7 @@ export default function TodoItem({
   status,
   dueDate,
   completed,
+  sort_order,
   onUpdate,
   onDelete,
   isFocused,
@@ -46,6 +55,7 @@ export default function TodoItem({
     status,
     dueDate,
     completed,
+    sort_order,
   });
 
   const handleSave = async () => {
@@ -69,6 +79,7 @@ export default function TodoItem({
       status,
       dueDate,
       completed,
+      sort_order,
     });
     onUnfocus();
   };
@@ -76,15 +87,6 @@ export default function TodoItem({
   const dateForInput = formData.dueDate
     ? formData.dueDate.split("T")[0]
     : "";
-
-  const toggleComplete = async () => {
-    if (completed) return;
-
-    await onUpdate(id, {
-      completed: true,
-      status: "completed",
-    });
-  };
 
   return (
     <div
@@ -94,7 +96,6 @@ export default function TodoItem({
     >
       {isFocused ? (
         <>
- 
           <input
             className="w-full text-xl font-semibold bg-white/20 rounded px-3 py-2"
             value={formData.title}
@@ -102,7 +103,6 @@ export default function TodoItem({
               setFormData({ ...formData, title: e.target.value })
             }
           />
-
           <textarea
             className="w-full bg-white/20 rounded px-3 py-2 min-h-[120px] max-h-60 mt-4"
             value={formData.description}
@@ -110,7 +110,6 @@ export default function TodoItem({
               setFormData({ ...formData, description: e.target.value })
             }
           />
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             <select
               className="bg-white/20 py-2 rounded px-4 cursor-pointer"
@@ -135,7 +134,7 @@ export default function TodoItem({
                 })
               }
             >
-              <option value="pending" className="bg-black/80 cu">Pending</option>
+              <option value="pending" className="bg-black/80">Pending</option>
               <option value="completed" className="bg-black/80">Completed</option>
               <option value="cancelled" className="bg-black/80">Cancelled</option>
             </select>
@@ -169,9 +168,7 @@ export default function TodoItem({
         </>
       ) : (
         <>
-
           <div className="flex justify-between items-center gap-4">
-
             <div className="flex flex-col gap-1">
               <h3
                 className={`text-lg font-semibold ${
@@ -194,31 +191,53 @@ export default function TodoItem({
                 </div>
               )}
 
-              <label
-                className={`flex items-center gap-2 mt-2 text-sm ${
-                  completed
-                    ? "cursor-not-allowed text-gray-500"
-                    : "cursor-pointer"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={completed}
-                  disabled={completed}
-                  onChange={toggleComplete}
-                  className="accent-[#DA498D] w-4 h-4"
-                />
-                <span className={completed ? "text-green-400" : ""}>
-                  Completed
-                </span>
-              </label>
+              <div className="flex items-center gap-3 mt-3">
+                <button
+                  onClick={() =>
+                    onUpdate(id, { status: "pending", completed: false })
+                  }
+                  className={`transition ${
+                    status === "pending"
+                      ? "text-yellow-400"
+                      : "text-gray-400 hover:text-yellow-400"
+                  }`}
+                >
+                  <Clock size={22} />
+                </button>
+
+                <button
+                  onClick={() =>
+                    onUpdate(id, { status: "completed", completed: true })
+                  }
+                  className={`transition ${
+                    status === "completed"
+                      ? "text-green-400"
+                      : "text-gray-400 hover:text-green-400"
+                  }`}
+                  disabled={status === "completed"}
+                >
+                  <CheckCircle size={22} />
+                </button>
+
+                <button
+                  onClick={() =>
+                    onUpdate(id, { status: "cancelled", completed: false })
+                  }
+                  className={`transition ${
+                    status === "cancelled"
+                      ? "text-red-400"
+                      : "text-gray-400 hover:text-red-400"
+                  }`}
+                >
+                  <XCircle size={22} />
+                </button>
+              </div>
             </div>
 
-            
-            <div className="flex flex-row justify-center  gap-2">
+            <div className="flex flex-row justify-center gap-2">
               <button
                 onClick={() => onDelete(id)}
-                className="text-red-400 hover:text-red-600 cursor-pointer"  
+                className="text-red-400 hover:text-red-600 cursor-pointer"
               >
                 <Trash2 />
               </button>

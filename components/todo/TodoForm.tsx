@@ -8,11 +8,11 @@ export interface TodoFormData {
   description?: string;
   priority: "low" | "medium" | "high";
   dueDate?: string;
-  status?: "pending"; // خودکار pending
+  status?: "pending";
 }
 
 interface TodoFormProps {
-  onAdd: (data: TodoFormData) => Promise<void>; 
+  onAdd: (data: TodoFormData) => Promise<void>;
 }
 
 export default function TodoForm({ onAdd }: TodoFormProps) {
@@ -21,10 +21,10 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
     description: "",
     priority: "medium",
     dueDate: "",
-    status: "pending", // خودکار pending
+    status: "pending",
   });
 
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -33,7 +33,6 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
   const handleSubmit = async () => {
     setError(null);
 
-    // اعتبارسنجی title و description
     if (!form.title.trim()) {
       setError("Title cannot be empty");
       return;
@@ -43,7 +42,6 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
       return;
     }
 
-    // اعتبارسنجی تاریخ
     if (!form.dueDate?.trim()) {
       setError("Date cannot be empty");
       return;
@@ -51,7 +49,7 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
     if (form.dueDate) {
       const selectedDate = new Date(form.dueDate);
       const today = new Date();
-      today.setHours(0, 0, 0, 0); // فقط تاریخ بدون ساعت
+      today.setHours(0, 0, 0, 0);
       if (selectedDate < today) {
         setError("Due date cannot be in the past");
         return;
@@ -84,7 +82,7 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
         onChange={(e) => setForm({ ...form, title: e.target.value })}
       />
       <textarea
-        rows={20} 
+        rows={20}
         className="w-full p-2 bg-white/20 rounded max-h-80"
         placeholder="Description"
         value={form.description}
@@ -95,12 +93,21 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
           className="p-2 bg-white/20 rounded cursor-pointer"
           value={form.priority}
           onChange={(e) =>
-            setForm({ ...form, priority: e.target.value as TodoFormData["priority"] })
+            setForm({
+              ...form,
+              priority: e.target.value as TodoFormData["priority"],
+            })
           }
         >
-          <option value="low" className="bg-black/80">Low priority</option>
-          <option value="medium" className="bg-black/80">Medium priority</option>
-          <option value="high" className="bg-black/80">High priority</option>
+          <option value="low" className="bg-black/80">
+            Low priority
+          </option>
+          <option value="medium" className="bg-black/80">
+            Medium priority
+          </option>
+          <option value="high" className="bg-black/80">
+            High priority
+          </option>
         </select>
 
         <div className="relative w-full">

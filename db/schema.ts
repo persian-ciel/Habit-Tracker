@@ -155,18 +155,20 @@ export const habit_logs = pgTable(
   })
 );
 
-export const tasks = pgTable('tasks', {
-  id: serial('id').primaryKey(),
-  user_id: text('user_id').notNull(),
-  title: text('title').notNull(),
-  description: text('description'),
-  due_date: timestamp('due_date'),
-  completed: boolean('completed').default(false),
-  priority: varchar('priority', { length: 10 }).default('medium'), 
-  priority_status: varchar('priority_status', { length: 20 }).default('normal'),
-  created_at: timestamp('created_at').defaultNow(),
-  updated_at: timestamp('updated_at').defaultNow(),
-});
+export const tasks = pgTable("tasks", 
+  { id: serial("id").primaryKey(),
+     user_id: text("user_id").notNull(), 
+     title: text("title").notNull(), 
+     description: text("description"), 
+     due_date: timestamp("due_date"), 
+     completed: boolean("completed").default(false), 
+     priority: varchar("priority", { length: 10 }).default("medium"), 
+     priority_status: varchar("priority_status", { length: 20 }).default("normal"), 
+     created_at: timestamp("created_at").defaultNow(), 
+     updated_at: timestamp("updated_at").defaultNow(), 
+     status: text("status").default("pending").notNull(), 
+     sort_order: integer("sort_order").notNull().default(0),
+    });
 
 export const taskOrders = pgTable("task_orders", {
   id: serial("id").primaryKey(),

@@ -48,7 +48,6 @@ export default function TodoList({
     <div className="w-full">
       {focusedTodoId === null && <TodoFilter onChange={setFilters} />}
 
-      
       {loading ? (
         <div className="flex justify-center items-center mt-16 h-[50vh]">
           <Loader2 className="w-4 h-4 animate-spin " />
